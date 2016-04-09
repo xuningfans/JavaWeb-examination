@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.netease.course.dao.TrxDao">
+	<resultMap id="resultMap" type="trx">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="buyPrice" property="buyPrice" jdbcType="DOUBLE" />
+		<result column="time" property="time" jdbcType="BIGINT" />
+		<association column="personId" property="person" javaType="person">
+			<id column="personId" property="id" jdbcType="INTEGER" />
+			<result column="userName" property="userName" jdbcType="VARCHAR" />
+			<result column="password" property="password" jdbcType="VARCHAR" />
+			<result column="nickName" property="nickName" jdbcType="VARCHAR" />
+			<result column="userType" property="userType" jdbcType="INTEGER" />
+		</association>
+		<association column="c_id" property="content" javaType="content">
+			<id column="c_id" property="id" jdbcType="INTEGER" />
+			<result column="price" property="price" jdbcType="BIGINT" />
+			<result column="title" property="title" jdbcType="VARCHAR" />
+			<result column="abstract" property="summary" jdbcType="VARCHAR" />
+			<result column="icon" property="image" jdbcType="VARCHAR" />
+			<result column="text" property="detail" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<sql id="Column_List">
+		id, contentId, personId, price, time
+	</sql>
+
+	<!-- 插入单条数据 -->
+	<insert id="insert" parameterType="trx">
+		insert into trx(contentId,
+		personId, price, time)
+		values(#{content.id},#{person.id},#{buyPrice},#{time})
+	</insert>
+
+	<!-- 根据用户id查询所有用户订单 -->
+	<select id="getBuyList" parameterType="person" resultMap="resultMap">
+		SELECT
+		content.id c_id,
+		content.title,
+		content.icon,
+		trx.id,
+		trx.price AS buyPrice,
+		trx.time
+		FROM trx
+		LEFT JOIN content ON content.id = trx.contentId
+		WHERE trx.personId= #{id}
+	</select>
+
+</mapper>

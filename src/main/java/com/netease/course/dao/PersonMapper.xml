@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.netease.course.dao.PersonDao">
+	<resultMap id="resultMap" type="person">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="nickName" property="nickName" jdbcType="VARCHAR" />
+		<result column="userType" property="userType" jdbcType="TINYINT" />
+	</resultMap>
+
+	<!-- 列名 -->
+	<sql id="Column_List">
+		id, userName, password, nickName, userType
+	</sql>
+
+
+	<!-- 通用where -->
+	<sql id="where">
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="userName != null and !&quot;&quot;.equals(userName.trim())">
+				and userName=#{userName}
+			</if>
+			<if test="password != null and !&quot;&quot;.equals(password.trim())">
+				and password=#{password}
+			</if>
+			<if test="nickName != null and !&quot;&quot;.equals(nickName.trim())">
+				and nickName=#{nickName}
+			</if>
+			<if test="userType != null">
+				and userType = #{userType}
+			</if>
+		</where>
+	</sql>
+
+	<!-- 通过条件查询多条数据，也可以无条件查询所有数据  -->
+	<select id="selectList" parameterType="person" resultMap="resultMap">
+		SELECT
+		<include refid="Column_List" />
+		FROM person
+		<include refid="where" />
+	</select>
+	
+	<!-- 通过条件查询单条数据  -->
+	<select id="select" parameterType="person" resultMap="resultMap">
+		SELECT
+		<include refid="Column_List" />
+		FROM person
+		<include refid="where" />
+	</select>
+
+
+</mapper>

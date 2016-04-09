@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+		 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.netease.course.dao.ContentDao">
+	<!-- ===================================================================================== -->
+	<!--                                                                                       -->
+	<!--                                   Product                                             -->
+	<!--                           		   页面回显数据 	                                       -->
+	<!--                                                                                       -->
+	<!-- ===================================================================================== -->
+	<resultMap id="productResultMap" type="product" extends="contentResultMap">
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="buyPrice" property="buyPrice" jdbcType="DOUBLE" />
+		<association column="personId" property="person" javaType="person">
+			<id column="personId" property="id" jdbcType="INTEGER"/>
+			<result column="userName" property="userName" jdbcType="VARCHAR"/>
+			<result column="password" property="password" jdbcType="VARCHAR"/>
+			<result column="nickName" property="nickName" jdbcType="VARCHAR"/>
+			<result column="userType" property="userType" jdbcType="INTEGER"/>
+		</association>
+	</resultMap>
+	
+		
+	<!-- 根据Id查询商品详情信息 -->
+	<select id="getProductById" parameterType="INTEGER" resultMap="productResultMap">
+		SELECT
+		content.id,
+		content.price,
+		content.title,
+		content.icon,
+		content.abstract,
+		content.text,
+		trx.personId,
+		trx.price AS buyPrice,
+		person.userName,
+		person.password,
+		person.nickName,
+		person.userType
+		FROM
+		content
+		LEFT JOIN trx ON content.id = trx.contentId 
+		LEFT JOIN person ON personId = person.id
+		WHERE content.id= #{_parameter}
+	</select>
+	
+	<!-- 根据商品列表，type==1为未购买商品 -->
+	<select id="getProductList" parameterType="INTEGER" resultMap="productResultMap">
+		SELECT
+		content.id,
+		content.price,
+		content.title,
+		content.icon,
+		content.abstract,
+		trx.personId,
+		trx.price AS buyPrice,
+		person.userName,
+		person.password,
+		person.nickName,
+		person.userType
+		FROM
+		content
+		LEFT JOIN trx ON content.id = trx.contentId 
+		LEFT JOIN person ON personId = person.id
+		<!-- 页面参数 type==1 查询未购买商品 -->
+		<if test="_parameter==1">
+			WHERE personId IS NULL
+		</if>
+	</select>
+	
+	
+	
+	<!-- ===================================================================================== -->
+	<!--                                                                                       -->
+	<!--                                   Content                                             -->
+	<!--                                  商品内容，数据库存储字段	                               -->
+	<!--                                                                                       -->
+	<!-- ===================================================================================== -->
+	<resultMap id="contentResultMap" type="content">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="price" property="price" jdbcType="BIGINT" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="abstract" property="summary" jdbcType="VARCHAR" />
+		<result column="icon" property="image" jdbcType="VARCHAR" />
+		<result column="text" property="detail" jdbcType="VARCHAR" 
+				typeHandler="com.netease.course.web.utils.MyBlobTypeHandler"/>
+	</resultMap>
+	
+	<!-- 基础字段 -->
+	<sql id="Column_List">
+		id, price, title, abstract, icon, text
+	</sql>
+	
+	<!-- 通用where -->
+	<sql id="where">
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="price != null">
+				AND price=#{price}
+			</if>
+			<if test="title != null and !&quot;&quot;.equals(title.trim())">
+				AND title=#{title}
+			</if>
+			<if test="summary != null and !&quot;&quot;.equals(summary.trim())">
+				AND summary=#{summary}
+			</if>
+		</where>
+	</sql>
+
+	<!-- 插入单条数据 -->
+	<insert id="insert" parameterType="content" useGeneratedKeys="true" keyProperty="id">
+		insert into content(price,title, abstract, icon, text)
+		values(#{price}, #{title}, #{summary},#{image}, #{detail})
+	</insert>
+	
+	<!-- 更新单条数据 -->
+	<insert id="update" parameterType="content" >
+		UPDATE content
+		SET price=#{price},title=#{title}, abstract=#{summary}, icon=#{image}, text=#{detail}
+		WHERE id=#{id}
+	</insert>
+
+	<!-- 查询单品详情 -->
+	<select id="select" parameterType="content" resultMap="contentResultMap">
+		SELECT
+		<include refid="Column_List" />
+		FROM content
+		<include refid="where" />
+	</select>
+	
+	<!-- 删除单品 -->
+	<delete id="delete" parameterType="content">
+		DELETE FROM content
+		<include refid="where"/>
+	</delete>
+</mapper>
