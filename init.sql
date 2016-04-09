@@ -1,30 +1,34 @@
+
 /*	数据库表结构：
 	用户表		*/
-create table person(
-id int auto_increment primary key comment "主键", 
-userName varchar(100) comment "用户名", 
-password varchar(100) comment "密码md5加密",
-nickName varchar(50) comment "用户昵称",
-userType tinyint(3) comment "类型，买家0，卖家1") 
+create table person
+(
+id int auto_increment primary key, 
+userName varchar(100),
+password varchar(100),
+nickName varchar(50),
+userType tinyint(3)
+) 
 ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*	内容表	*/
-create table content(
-id int auto_increment primary key comment "主键",  
-price double(8,2)  comment "当前价格",
-title varchar(100) comment "标题",
-icon varchar(255) comment "图片位置",
-abstract varchar(200) comment "摘要",
-text blob comment "正文"  )
+create table content
+(
+id int auto_increment primary key,  
+price double(8,2),
+title varchar(100),
+icon varchar(255),
+abstract varchar(200),
+text blob)
 ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*	交易记录表	*/
 create table trx(
-id int auto_increment primary key comment "主键",  
-contentId int  comment "内容ID",
-personId int comment "用户ID",
-price double(8,2) comment "购买价格",
-time bigint comment "购买时间")
+id int auto_increment primary key,  
+contentId int,
+personId int,
+price double(8,2),
+time bigint)
 ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*	用户数据：	*/

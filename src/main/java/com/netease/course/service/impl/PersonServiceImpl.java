@@ -13,7 +13,7 @@ import com.netease.course.service.PersonService;
  * @author 公猴脖子男
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class PersonServiceImpl extends BaseServiceImpl<Person> implements PersonService {
 
 	/**

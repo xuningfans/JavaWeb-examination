@@ -17,7 +17,7 @@ import com.netease.course.service.TrxService;
  * @author 公猴脖子男
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class TrxServiceImpl extends BaseServiceImpl<Trx> implements TrxService {
 
 	/**
@@ -46,7 +46,19 @@ public class TrxServiceImpl extends BaseServiceImpl<Trx> implements TrxService {
 		trx.setBuyPrice(content.getPrice());
 		trx.setTime(new Date().getTime());
 		// 插入订单
-		return trxDao.insert(trx);
+		int i = trxDao.insert(trx);
+//		throwException();
+		return i;
+	}
+
+	/**
+	 * 测试事务
+	 * 
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unused")
+	private void throwException() throws Exception {
+		throw new Exception();
 	}
 
 	/**

@@ -46,7 +46,6 @@ public class TrxController extends BaseController {
 		} catch (Exception e) {
 			// 数据库异常
 			ResponseJson.responseFail(model, "购买失败！");
-			e.printStackTrace();
 		}
 		return model;
 	}

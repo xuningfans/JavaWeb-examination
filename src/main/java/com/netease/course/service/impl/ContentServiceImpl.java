@@ -15,7 +15,7 @@ import com.netease.course.service.ContentService;
  * @author 公猴脖子男
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class ContentServiceImpl extends BaseServiceImpl<Content> implements ContentService {
 
 	/**

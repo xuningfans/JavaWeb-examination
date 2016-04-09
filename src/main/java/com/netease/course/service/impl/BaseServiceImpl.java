@@ -22,7 +22,7 @@ import com.netease.course.service.BaseService;
  *
  * @param <T>
  */
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class BaseServiceImpl<T> implements BaseService<T> {
 
 	@Autowired
