@@ -127,7 +127,7 @@
 
 
 	<build>
-		<finalName>/ROOT</finalName>
+		<finalName>ROOT</finalName>
 		<pluginManagement>
 			<plugins>
 				<!-- 配置JDK版本 -->
