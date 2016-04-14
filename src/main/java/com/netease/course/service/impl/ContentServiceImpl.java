@@ -3,7 +3,6 @@ package com.netease.course.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.netease.course.meta.Content;
 import com.netease.course.meta.Product;
@@ -15,7 +14,6 @@ import com.netease.course.service.ContentService;
  * @author 公猴脖子男
  */
 @Service
-@Transactional(rollbackFor=Exception.class)
 public class ContentServiceImpl extends BaseServiceImpl<Content> implements ContentService {
 
 	/**
@@ -26,7 +24,6 @@ public class ContentServiceImpl extends BaseServiceImpl<Content> implements Cont
 	 * @return
 	 */
 	@Override
-	@Transactional(readOnly = true) // 事务控制-->只读
 	public List<Product> getProductList(Integer type) {
 		return contentDao.getProductList(type);
 	}
@@ -39,7 +36,6 @@ public class ContentServiceImpl extends BaseServiceImpl<Content> implements Cont
 	 * @return
 	 */
 	@Override
-	@Transactional(readOnly = true) // 事务控制-->只读
 	public Product getProductById(Integer id) {
 		return contentDao.getProductById(id);
 	}

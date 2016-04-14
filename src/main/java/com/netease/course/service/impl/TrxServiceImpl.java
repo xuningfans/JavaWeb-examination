@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.netease.course.meta.Content;
 import com.netease.course.meta.Person;
@@ -17,7 +16,6 @@ import com.netease.course.service.TrxService;
  * @author 公猴脖子男
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class TrxServiceImpl extends BaseServiceImpl<Trx> implements TrxService {
 
 	/**
@@ -30,7 +28,7 @@ public class TrxServiceImpl extends BaseServiceImpl<Trx> implements TrxService {
 	 * @throws Exception
 	 */
 	@Override
-	public int buy(String contentId, Person user) throws Exception {
+	public int insertTrx(String contentId, Person user) throws Exception {
 		// 将参数转换为整型
 		Integer tmpId = Integer.parseInt(contentId);
 		// 新建查询条件
@@ -69,7 +67,6 @@ public class TrxServiceImpl extends BaseServiceImpl<Trx> implements TrxService {
 	 * @return 账目列表
 	 */
 	@Override
-	@Transactional(readOnly = true) // 事务控制 -->只读
 	public List<Trx> getBuyList(Person user) {
 		return trxDao.getBuyList(user);
 	}

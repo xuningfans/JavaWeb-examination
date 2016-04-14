@@ -31,7 +31,7 @@ public class TrxController extends BaseController {
 		try {
 			Person user = (Person) session.getAttribute("user");
 			if (user != null && user.getId() != null) {
-				int i = trxService.buy(id, user);
+				int i = trxService.insertTrx(id, user);
 				if (i > 0) {
 					// 数据库插入成功，购买成功
 					ResponseJson.responseSucess(model, "购买成功！");

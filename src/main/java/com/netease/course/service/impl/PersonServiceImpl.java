@@ -2,7 +2,6 @@ package com.netease.course.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.netease.course.meta.Person;
 import com.netease.course.service.PersonService;
@@ -13,7 +12,6 @@ import com.netease.course.service.PersonService;
  * @author 公猴脖子男
  */
 @Service
-@Transactional(rollbackFor=Exception.class)
 public class PersonServiceImpl extends BaseServiceImpl<Person> implements PersonService {
 
 	/**
@@ -26,7 +24,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
 	 * @return 验证成功返回用户详细信息
 	 */
 	@Override
-	@Transactional(readOnly = true) // 事务控制 -->只读
 	public Person login(String username, String password) {
 		// 用户名不为空则返回用户信息
 		if (!(StringUtils.isBlank(username) && StringUtils.isBlank(password))) {

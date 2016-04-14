@@ -7,7 +7,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.netease.course.dao.BaseDao;
 import com.netease.course.dao.ContentDao;
@@ -22,7 +21,7 @@ import com.netease.course.service.BaseService;
  *
  * @param <T>
  */
-@Transactional(rollbackFor=Exception.class)
+// @Transactional(rollbackFor=Exception.class)
 public class BaseServiceImpl<T> implements BaseService<T> {
 
 	@Autowired
@@ -146,7 +145,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	 * @return 查询结果
 	 */
 	@Override
-	@Transactional(readOnly=true) // 事务控制-->只读
+	// @Transactional(readOnly=true) // 事务控制-->只读
 	public T select(T bean) {
 		return baseDao.select(bean);
 	}
@@ -158,7 +157,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	 * @return 结果List集合
 	 */
 	@Override
-	@Transactional(readOnly=true) // 事务控制-->只读
+	// @Transactional(readOnly=true) // 事务控制-->只读
 	public List<T> selectList(T bean) {
 		return (List<T>) baseDao.selectList(bean);
 	}
@@ -169,7 +168,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	 * @return 结果List集合
 	 */
 	@Override
-	@Transactional(readOnly=true) // 事务控制-->只读
+	// @Transactional(readOnly=true) // 事务控制-->只读
 	public List<T> selectList() {
 		return baseDao.selectList(null);
 	}

@@ -21,7 +21,7 @@ public interface TrxService extends BaseService<Trx> {
 	 *            购买人
 	 * @throws Exception
 	 */
-	int buy(String contentId, Person user) throws Exception;
+	int insertTrx(String contentId, Person user) throws Exception;
 
 	/**
 	 * 获取账目列表

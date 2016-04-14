@@ -3,10 +3,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	 xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
@@ -15,7 +18,29 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+
 	<!-- 开启事务注解 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+
+	<!-- 配置事务通知 -->
+	<tx:advice id="advice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- insert* update* delete*任何异常都回滚，传播行为使用REQUIRED-->
+			<tx:method name="insert*" propagation="REQUIRED"
+				rollback-for="Exception" />
+			<tx:method name="update*" propagation="REQUIRED"
+				rollback-for="Exception" />
+			<tx:method name="delete*" propagation="REQUIRED"
+				rollback-for="Exception" />
+			<!-- 其他方法都开启read-only="true"，传播行为使用SUPPORTS -->
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 配置切面织入的范围,事务边界定在service层 -->
+	<aop:config>
+		<aop:advisor advice-ref="advice"
+			pointcut="execution(* com.netease.course.service.impl.*.*(..))" />
+	</aop:config>
 
 </beans>
