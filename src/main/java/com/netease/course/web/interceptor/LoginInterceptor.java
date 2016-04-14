@@ -84,7 +84,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 		}
 
 		// 用户已登录但无权访问该页面，重定向至主页
-		response.sendRedirect("/");
+		response.sendRedirect("/login");
 		return false;
 
 	}
