@@ -58,8 +58,12 @@
     
     <!-- 404处理 -->
     <error-page>
-    <error-code>404</error-code>
-    <location>/html/error.html</location>
+	    <error-code>404</error-code>
+	    <location>/html/404.html</location>
+    </error-page>
+    <error-page>
+	    <error-code>405</error-code>
+	    <location>/html/405.html</location>
     </error-page>
      
     <welcome-file-list>  

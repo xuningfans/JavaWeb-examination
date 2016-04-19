@@ -57,9 +57,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 		if (user == null) {
 			// 用户未登录访问无需登录页面 ，直接放行
 			if (!(requestURI.startsWith("/font/") || requestURI.startsWith("/back/"))) {
-				
-				// 访问主页，进行特殊处理，不允许有查询参数  ?type=1
-				if (requestURI.equals("/") && request.getQueryString()!=null){
+
+				// 访问主页，进行特殊处理，不允许有查询参数 ?type=1
+				if (requestURI.equals("/") && request.getQueryString() != null) {
 					response.sendRedirect("/login");
 					return false;
 				} else {
@@ -70,6 +70,12 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 		// 用户已登录
 		if (user != null) {
+
+			// 已登录访问登录页，跳转至主页
+			if (requestURI.startsWith("/login")) {
+				response.sendRedirect("/");
+				return false;
+			}
 
 			// 卖家，允许访问所有页面
 			if (user.getUsertype() == 1) {
