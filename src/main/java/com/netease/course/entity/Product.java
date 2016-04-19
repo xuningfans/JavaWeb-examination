@@ -1,6 +1,9 @@
-package com.netease.course.meta;
+package com.netease.course.entity;
 
 import java.io.Serializable;
+
+import com.netease.course.meta.Content;
+import com.netease.course.meta.Person;
 
 /**
  * 商品页面回显类

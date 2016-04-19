@@ -2,6 +2,7 @@ package com.netease.course.service;
 
 import java.util.List;
 
+import com.netease.course.meta.Content;
 import com.netease.course.meta.Person;
 import com.netease.course.meta.Trx;
 
@@ -31,5 +32,8 @@ public interface TrxService extends BaseService<Trx> {
 	 * @return 账目列表
 	 */
 	List<Trx> getBuyList(Person user);
+
+	/** 根据商品查询订单数量 */
+	Integer getTrxCountByContentId(Content query);
 
 }

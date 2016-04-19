@@ -2,8 +2,8 @@ package com.netease.course.service;
 
 import java.util.List;
 
+import com.netease.course.entity.Product;
 import com.netease.course.meta.Content;
-import com.netease.course.meta.Product;
 
 /**
  * 产品详情Service层接口

@@ -45,7 +45,7 @@ public class TrxServiceImpl extends BaseServiceImpl<Trx> implements TrxService {
 		trx.setTime(new Date().getTime());
 		// 插入订单
 		int i = trxDao.insert(trx);
-//		throwException();
+		// throwException();
 		return i;
 	}
 
@@ -69,6 +69,20 @@ public class TrxServiceImpl extends BaseServiceImpl<Trx> implements TrxService {
 	@Override
 	public List<Trx> getBuyList(Person user) {
 		return trxDao.getBuyList(user);
+	}
+
+	/**
+	 * 获取账目列表
+	 * 
+	 * @param query
+	 *            商品
+	 * @return 账目列表
+	 * 
+	 */
+	@Override
+	public Integer getTrxCountByContentId(Content query) {
+
+		return trxDao.getTrxCountByContentId(query);
 	}
 
 }

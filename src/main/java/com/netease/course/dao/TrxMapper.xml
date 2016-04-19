@@ -33,6 +33,13 @@
 		personId, price, time)
 		values(#{content.id},#{person.id},#{buyPrice},#{time})
 	</insert>
+	
+	<!-- 查询该商品是否有订单，判断是否删除该商品 -->
+	<select id="getTrxCountByContentId" parameterType="content" resultType="INTEGER">
+		select id
+		FROM trx 
+		where contentId=#{id}
+	</select>
 
 	<!-- 根据用户id查询所有用户订单 -->
 	<select id="getBuyList" parameterType="person" resultMap="resultMap">

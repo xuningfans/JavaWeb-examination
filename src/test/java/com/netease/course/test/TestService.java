@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.netease.course.entity.Product;
 import com.netease.course.meta.Content;
 import com.netease.course.meta.Person;
-import com.netease.course.meta.Product;
 import com.netease.course.meta.Trx;
 
 public class TestService extends BaseTest{

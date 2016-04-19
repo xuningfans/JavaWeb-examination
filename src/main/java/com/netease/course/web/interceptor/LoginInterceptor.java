@@ -14,10 +14,7 @@ import com.netease.course.service.PersonService;
 import com.netease.course.web.utils.WebUtil;
 
 /**
- * 用户权限拦截器，进行权限验证，对用户访问资源控制
- * /font/* 普通用户可以访问
- * /back/* 管理员可以访问
- * / 未登录可以访问
+ * 用户权限拦截器，进行权限验证，对用户访问资源控制 /font/* 普通用户可以访问 /back/* 管理员可以访问 / 未登录可以访问
  * 
  * @author 公猴脖子男
  */
@@ -50,7 +47,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 				if (!(StringUtils.isBlank(cookieUser.getUserName()) && StringUtils.isBlank(cookieUser.getPassword()))) {
 					user = personService.login(cookieUser.getUserName(), cookieUser.getPassword());
 					if (user != null) {
-						// 用户名密码合法，允许访问资源
+						// 用户名密码合法
 						session.setAttribute("user", user);
 					}
 				}
@@ -60,22 +57,26 @@ public class LoginInterceptor implements HandlerInterceptor {
 		if (user == null) {
 			// 用户未登录访问无需登录页面 ，直接放行
 			if (!(requestURI.startsWith("/font/") || requestURI.startsWith("/back/"))) {
-				return true;
+				
+				// 访问主页，进行特殊处理，不允许有查询参数  ?type=1
+				if (requestURI.equals("/") && request.getQueryString()!=null){
+					response.sendRedirect("/login");
+					return false;
+				} else {
+					return true;
+				}
 			}
 		}
 
-		// 用户已登录，将用户放入request域，为除注销页面之外所有页面提供user
+		// 用户已登录
 		if (user != null) {
-			if (!requestURI.equals("/font/logout")) {
-				request.setAttribute("user", user);
-			}
 
 			// 卖家，允许访问所有页面
 			if (user.getUsertype() == 1) {
 				return true;
 			}
 
-			// 卖家，允许访问非后台页面
+			// 买家，允许访问非后台页面
 			if (user.getUsertype() == 0) {
 				if (!requestURI.startsWith("/back/")) {
 					return true;
@@ -83,9 +84,15 @@ public class LoginInterceptor implements HandlerInterceptor {
 			}
 		}
 
-		// 用户已登录但无权访问该页面，重定向至主页
-		response.sendRedirect("/login");
-		return false;
+		// 用户未登录且无权访问该页面，重定向至登录页
+		if (user == null) {
+			response.sendRedirect("/login");
+			return false;
+		} else {
+			// 用户已登录但无权访问该页面，重定向至主页
+			response.sendRedirect("/");
+			return false;
+		}
 
 	}
 

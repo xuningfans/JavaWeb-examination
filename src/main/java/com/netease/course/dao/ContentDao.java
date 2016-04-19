@@ -2,8 +2,8 @@ package com.netease.course.dao;
 
 import java.util.List;
 
+import com.netease.course.entity.Product;
 import com.netease.course.meta.Content;
-import com.netease.course.meta.Product;
 
 /**
  * 商品Dao

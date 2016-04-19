@@ -15,7 +15,8 @@
 				包下面的javabean,并且默认设置一个别名，默
 				认的名字为： javabean 的首字母不限大小写的
 				非限定类名来作为它的别名。 -->
-		<property name="typeAliasesPackage" value="com.netease.course.meta" />
+		<property name="typeAliasesPackage" value="com.netease.course.meta,com.netease.course.entity">
+		</property>
 	</bean>
 	
 	<!--

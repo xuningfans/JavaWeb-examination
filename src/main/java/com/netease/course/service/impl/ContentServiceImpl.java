@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.netease.course.entity.Product;
 import com.netease.course.meta.Content;
-import com.netease.course.meta.Product;
 import com.netease.course.service.ContentService;
 
 /**

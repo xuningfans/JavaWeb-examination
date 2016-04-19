@@ -23,7 +23,7 @@ public class WebUtil {
 	/**
 	 * JSON转换器
 	 */
-	private static final ObjectMapper objectMapper = new ObjectMapper();
+	private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
 
 	/**************************************************
 	 * 从Cookie中验证用户权限
@@ -78,7 +78,7 @@ public class WebUtil {
 		try {
 			// 将对象写进流
 			String cookieName = obj.getClass().getSimpleName();
-			objectMapper.writeValue(stringWriter, obj);
+			OBJECTMAPPER.writeValue(stringWriter, obj);
 			// 将流中的数据放进新建的Cookie
 			Cookie cookie = new Cookie(cookieName, stringWriter.toString());
 
@@ -117,7 +117,7 @@ public class WebUtil {
 
 					// 将获取的Cookie字符串转换成对象
 					try {
-						T obj = objectMapper.readValue(cookie.getValue(), clazz);
+						T obj = OBJECTMAPPER.readValue(cookie.getValue(), clazz);
 						return obj;
 					} catch (Exception e) {
 						e.printStackTrace();

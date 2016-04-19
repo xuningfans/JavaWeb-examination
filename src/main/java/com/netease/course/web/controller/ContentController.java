@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.netease.course.entity.Product;
 import com.netease.course.meta.Content;
-import com.netease.course.meta.Product;
 import com.netease.course.service.ContentService;
+import com.netease.course.service.TrxService;
 import com.netease.course.web.utils.ResponseJson;
 
 /**
@@ -29,14 +30,16 @@ public class ContentController extends BaseController {
 	@Autowired
 	private ContentService contentService;
 
+	@Autowired
+	private TrxService trxService;
+
 	/*******************************************************
 	 * 主页
 	 * 
 	 * @param model
 	 * @return
-	 *"/font/list" 用户查询已购商品提供权限控制
 	 *******************************************************/
-	@RequestMapping(value = { "/", "/font/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public String index(@RequestParam(value = "type", required = false) Integer type, HttpSession session,
 			ModelMap model) {
 		List<Product> productList = contentService.getProductList(type);
@@ -202,16 +205,22 @@ public class ContentController extends BaseController {
 				Content query = new Content();
 				// 商品Id不空，且商品Id为数字
 				query.setId(tmpId);
-				int i = contentService.delete(query);
-				if (i > 0) {
-					ResponseJson.responseSucess(model, "删除成功！");
+				Integer count = trxService.getTrxCountByContentId(query);
+				// 商品订单数量<1可以删除
+				if (count == null || count < 1) {
+					int i = contentService.delete(query);
+					if (i > 0) {
+						ResponseJson.responseSucess(model, "删除成功！");
+					}
+				} else {
+					ResponseJson.responseFail(model, "删除失败，商品已出售！");
 				}
 			} else {
-				ResponseJson.responseFail(model, "删除失败！");
+				ResponseJson.responseFail(model, "商品不存在，删除失败！");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			ResponseJson.responseFail(model, "删除失败！");
+			ResponseJson.responseFail(model, "内部错误，删除失败！");
 		}
 		return model;
 	}
